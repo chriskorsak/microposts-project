@@ -28,6 +28,31 @@ class UI {
     })
     this.post.innerHTML = output;
   }
+  showAlert(message, className) {
+    this.clearAlert();
+    //create alert div
+    const alertDiv = document.createElement('div');
+    alertDiv.className = className;
+    alertDiv.appendChild(document.createTextNode(message));
+    //add to dom
+    const containerDiv = document.querySelector('.posts-container');
+    const postsDiv = document.querySelector('#posts');
+    containerDiv.insertBefore(alertDiv, postsDiv);
+
+    //timeout to remove alert
+    setTimeout(this.clearAlert, 3000);
+  }
+  clearAlert() {
+    const alertDiv = document.querySelector('.alert');
+    if (alertDiv) {
+      alertDiv.remove();
+    }
+  }
+
+  clearFields() {
+    this.titleInput.value = '';
+    this.bodyInput.value = '';
+  }
 }
 
 export const ui = new UI();
