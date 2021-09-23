@@ -4,8 +4,11 @@ import { ui } from "./ui";
 //get posts on page load
 document.addEventListener('DOMContentLoaded', getPosts);
 
-//submit post event listener
+//listen for submit new post
 document.querySelector('.post-submit').addEventListener('click', newPost);
+
+//listen for delete post
+document.querySelector('#posts').addEventListener('click', deletePost);
 
 function getPosts() {
   http.get('http://localhost:3000/posts')
@@ -29,4 +32,18 @@ function newPost() {
       ui.showAlert('Post Added', 'alert alert-success');
     })
     .catch(error => console.log(error));
+}
+
+function deletePost(e) {
+  e.preventDefault();
+  if (e.target.parentElement.classList.contains('delete')) {
+    //get id of post to delete from html data attribute value
+    const id = e.target.parentElement.dataset.id;
+    http.delete(`http://localhost:3000/posts/${id}`)
+      .then(data => {
+        getPosts();
+        ui.showAlert('Post Deleted', 'alert alert-success');
+      })
+      .catch(error => console.log(error));
+  }
 }
