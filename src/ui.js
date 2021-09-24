@@ -5,7 +5,7 @@ class UI {
     this.bodyInput = document.querySelector('#body');
     this.idInput = document.querySelector('#id');
     this.postSubmit = document.querySelector('.post-submit');
-    this.forState = 'add';
+    this.formState = 'add';
   }
 
   showPosts(posts) {
@@ -52,6 +52,51 @@ class UI {
   clearFields() {
     this.titleInput.value = '';
     this.bodyInput.value = '';
+  }
+
+  clearIdInput() {
+    this.idInput.value = '';
+  }
+
+  fillFields(data) {
+    this.titleInput.value = data.title;
+    this.bodyInput.value = data.body;
+    this.idInput.value = data.id;
+
+    this.changeFormState('edit');
+  }
+
+  changeFormState(type) {
+    if (type === 'edit') {
+      //this is for the edit form state
+
+      this.postSubmit.textContent = 'Update';
+      this.postSubmit.className = 'post-submit btn btn-warning btn-block'
+
+      //create cancel button
+      const cancelButton = document.createElement('button');
+      cancelButton.className = 'post-cancel btn btn-light btn-block mt-1'
+      cancelButton.appendChild(document.createTextNode('Cancel'));
+
+      //add cancel button to dom
+      //get parent and sibling to insert before
+      const cardForm = document.querySelector('.card-form');
+      const formEndSpan = document.querySelector('.form-end');
+      cardForm.insertBefore(cancelButton, formEndSpan);
+
+    } else {
+      //this is for cancelling the edit form state
+
+      //change button back to normal
+      this.postSubmit.textContent = 'Post It';
+      this.postSubmit.className = 'post-submit btn btn-primary btn-block'
+      //remove cancel button
+      document.querySelector('.post-cancel').remove();
+      //clear id from hidden field
+      this.clearIdInput();
+      //clear text from input fields
+      this.clearFields();
+    }
   }
 }
 
